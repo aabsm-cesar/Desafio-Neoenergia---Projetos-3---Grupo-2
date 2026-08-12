@@ -3,585 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeoDemanda - Cálculo de Demanda Elétrica | Neoenergia Pernambuco</title>
-    <!-- Redirect if not authenticated (Intranet Security Simulation) -->
-    <script>
-        if (!sessionStorage.getItem('neodemanda_user')) {
-            window.location.href = 'login.html';
-        }
-    </script>
+    <title>NeoDemanda - Sistema de Validação Técnica | Neoenergia Pernambuco</title>
     <!-- CSS Style sheets -->
     <link rel="stylesheet" href="style.css">
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Chart.js CDN for visual breakdown -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Canvas Confetti CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
-<body>
+<body style="background-color: var(--white); min-height: 100vh; display: flex; flex-direction: column;">
 
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="loading-overlay">
-        <div class="spinner"></div>
-        <div class="loading-text" id="loading-text">Processando cálculos normativos...</div>
-    </div>
-
-    <!-- Main App Container -->
-    <div id="app-container">
-
-        <!-- APPLICATION SHELL (Dashboard & Views) -->
-        <section id="screen-shell" class="screen app-shell active">
-            <!-- Sidebar Navigation (Desktop only) -->
-            <aside class="sidebar">
-                <div>
-                    <div class="sidebar-brand">
-                        <img src="logo_neoenergia.png" alt="Logo Neoenergia" style="height: 38px; object-fit: contain; filter: brightness(0) invert(1); margin-right: 4px;">
-                        <div class="brand-text">
-                            <h2 style="font-size: 1.15rem; font-weight:800; letter-spacing: -0.5px;">NeoDemanda</h2>
-                            <span style="font-size: 0.65rem; opacity:0.75; text-transform: uppercase; font-weight: 600;">Neoenergia</span>
-                        </div>
-                    </div>
-                    <ul class="sidebar-menu">
-                        <li class="sidebar-item active" id="menu-dashboard">
-                            <a href="#" onclick="switchView('dashboard')">
-                                <i data-lucide="layout-dashboard"></i>
-                                <span>Dashboard Inicial</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item" id="menu-input-form">
-                            <a href="#" onclick="switchView('input-form')">
-                                <i data-lucide="file-edit"></i>
-                                <span>Entrada de Dados</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item" id="menu-results">
-                            <a href="#" onclick="switchView('results')">
-                                <i data-lucide="calculator"></i>
-                                <span>Resultados do Cálculo</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item" id="menu-memorial">
-                            <a href="#" onclick="switchView('memorial')">
-                                <i data-lucide="file-text"></i>
-                                <span>Memorial Técnico</span>
-                            </a>
-                        </li>
-                    </ul>
+    <!-- LANDING HEADER -->
+    <header class="landing-header-bar">
+        <div class="landing-container header-flex">
+            <div class="brand-wrapper">
+                <img src="logo_neoenergia.png" alt="Neoenergia Pernambuco Logo" style="height: 45px; object-fit: contain; margin-right: 4px;">
+                <div class="brand-text" style="color: var(--bg-dark);">
+                    <h1 style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.8px;">NeoDemanda</h1>
+                    <span style="color: var(--text-secondary); font-size: 0.72rem; text-transform: uppercase; font-weight: 600;">Neoenergia Pernambuco</span>
                 </div>
-
-                <div class="sidebar-user">
-                    <div class="user-info-brief">
-                        <h4 id="user-display-name">Projetista Visitante</h4>
-                        <span id="user-display-role">Modo Demonstração</span>
-                    </div>
-                    <button class="btn-logout" onclick="handleLogout()" title="Sair do sistema">
-                        <i data-lucide="log-out"></i>
-                    </button>
-                </div>
-            </aside>
-
-            <!-- Main Content Area -->
-            <main class="main-content">
-                <!-- Top Bar -->
-                <div class="top-bar">
-                    <div class="project-selector-wrapper">
-                        <i data-lucide="folder" style="color: var(--primary);"></i>
-                        <span class="project-name-display" id="top-project-name">Sem Projeto Selecionado</span>
-                        <span class="badge badge-draft" id="top-project-status">N/A</span>
-                    </div>
-                    <div class="top-bar-actions">
-                        <div class="progress-text" id="project-progress-label">Preenchimento: 0%</div>
-                        <div class="progress-container">
-                            <div class="progress-bar" id="project-progress-bar"></div>
-                        </div>
-                        <button class="btn btn-primary" onclick="createNewProject()" style="padding: 8px 16px; font-size: 0.85rem; width: auto; box-shadow: none;">
-                            <i data-lucide="plus"></i> Novo Projeto
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Page Scrollable Container -->
-                <div class="page-container">
-
-                    <!-- SUB-VIEW 1: DASHBOARD INICIAL -->
-                    <div id="view-dashboard" class="fade-in" style="display: block;">
-                        <div class="dashboard-grid">
-                            <div class="dashboard-card primary">
-                                <div>
-                                    <div class="card-header-small">Demanda Total Calculada</div>
-                                    <div class="card-value" id="dash-demand-val">-- <span style="font-size: 1rem; color: var(--text-secondary);">kVA</span></div>
-                                </div>
-                                <div class="card-footer-small">
-                                    <i data-lucide="activity"></i> <span id="dash-demand-desc">Nenhum cálculo efetuado</span>
-                                </div>
-                            </div>
-                            <div class="dashboard-card primary">
-                                <div>
-                                    <div class="card-header-small">Tipo de Fornecimento</div>
-                                    <div class="card-value" id="dash-supply-val">N/A</div>
-                                </div>
-                                <div class="card-footer-small">
-                                    <i data-lucide="shield-alert"></i> Categoria dependente da demanda
-                                </div>
-                            </div>
-                            <div class="dashboard-card success">
-                                <div>
-                                    <div class="card-header-small">Unidades Consumidoras</div>
-                                    <div class="card-value" id="dash-units-val">0</div>
-                                </div>
-                                <div class="card-footer-small">
-                                    <i data-lucide="home"></i> Unidades totais cadastradas
-                                </div>
-                            </div>
-                            <div class="dashboard-card success" id="dash-conformity-card">
-                                <div>
-                                    <div class="card-header-small">Status do Projeto</div>
-                                    <div class="card-value" id="dash-status-val" style="font-size: 1.4rem; padding-top: 8px;">Aguardando Dados</div>
-                                </div>
-                                <div class="card-footer-small">
-                                    <i data-lucide="check-circle"></i> Validador de regras de conformidade
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="layout-split">
-                            <!-- Left Pane: Project History -->
-                            <div class="pane">
-                                <div class="pane-title">
-                                    <span>Meus Projetos Recentes</span>
-                                    <button class="btn-text-link" onclick="createNewProject()">Ver todos</button>
-                                </div>
-                                <div class="history-list" id="projects-history-list">
-                                    <!-- Dynamic Project Items Go Here -->
-                                    <div class="empty-state">
-                                        <i data-lucide="folder-open"></i>
-                                        <h3>Nenhum projeto ativo</h3>
-                                        <p>Clique em "Novo Projeto" no menu superior para iniciar seu primeiro dimensionamento.</p>
-                                        <button class="btn btn-secondary" onclick="createNewProject()" style="margin-top: 8px;">
-                                            <i data-lucide="plus"></i> Iniciar Novo Projeto
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Right Pane: Normative Guidelines -->
-                            <div class="pane">
-                                <div class="pane-title">Normas Técnicas (SM04.2-PE)</div>
-                                <p style="font-size: 0.85rem; line-height:1.6; color: var(--text-secondary); margin-bottom: 1rem;">
-                                    As exigências e fatores de demanda aplicados automaticamente estão de acordo com o Regulamento Técnico de Múltiplas Unidades da Neoenergia Pernambuco.
-                                </p>
-                                <div style="display: flex; flex-direction: column; gap: 10px;">
-                                    <div class="custom-alert success" style="padding: 10px; margin-bottom: 0;">
-                                        <div class="custom-alert-content">
-                                            <h4 style="font-size: 0.85rem;">Categoria T1 / T2 / T3</h4>
-                                            <p style="font-size: 0.75rem;">Atendimento até 75 kVA. Acima desse valor, é exigido posto de transformação ou cabine de proteção média tensão.</p>
-                                        </div>
-                                    </div>
-                                    <div class="custom-alert warning" style="padding: 10px; margin-bottom: 0;">
-                                        <div class="custom-alert-content">
-                                            <h4 style="font-size: 0.85rem;">Fator de Simultaneidade</h4>
-                                            <p style="font-size: 0.75rem;">Aplicado automaticamente de acordo com o número exato de apartamentos cadastrados no projeto.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SUB-VIEW 2: ENTRADA DE DADOS (FORMULÁRIO PRINCIPAL) -->
-                    <div id="view-input-form" class="fade-in" style="display: none;">
-                        <div class="pane">
-                            <div class="pane-title" style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.5rem;">
-                                <span>Dimensionamento do Projeto Elétrico</span>
-                                <span class="progress-text" id="form-steps-indicator">Passo 1 de 2: Dados Gerais</span>
-                            </div>
-
-                            <!-- Section 1: General Specs -->
-                            <div class="form-section">
-                                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">1. Informações Gerais da Edificação</h3>
-                                <p class="section-subtitle">Localização e características físicas gerais para análise de conformidade básica.</p>
-                                
-                                <div class="grid-3">
-                                    <div class="form-group">
-                                        <label for="project-name-input">Nome do Projeto *</label>
-                                        <input type="text" id="project-name-input" class="form-control-simple" placeholder="Ex: Residencial Boa Vista" oninput="updateProjectProgress()">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="project-cep-input">CEP *</label>
-                                        <input type="text" id="project-cep-input" class="form-control-simple" placeholder="50000-000" oninput="updateProjectProgress()">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="project-city-input">Cidade / Estado</label>
-                                        <input type="text" id="project-city-input" class="form-control-simple" value="Recife - PE" readonly>
-                                    </div>
-                                </div>
-                                <div class="grid-3">
-                                    <div class="form-group">
-                                        <label for="project-area-input">Área Construída Total (m²) *</label>
-                                        <input type="number" id="project-area-input" class="form-control-simple" placeholder="Ex: 1200" oninput="updateProjectProgress()">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="project-floors-input">Nº de Pavimentos *</label>
-                                        <input type="number" id="project-floors-input" class="form-control-simple" placeholder="Ex: 8" oninput="updateProjectProgress()">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="project-use-input">Tipo de Ocupação</label>
-                                        <select id="project-use-input" class="form-control-simple">
-                                            <option value="residencial">Exclusivamente Residencial</option>
-                                            <option value="comercial">Comercial / Serviços</option>
-                                            <option value="misto">Misto (Residencial + Comercial)</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Section 2: Mode Toggle & Consumer Units -->
-                            <div class="form-section">
-                                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">2. Módulos de Unidades Consumidoras</h3>
-                                <p class="section-subtitle">Especifique os agrupamentos de carga do condomínio e unidades individuais.</p>
-
-                                <div class="toggle-switch-container">
-                                    <div id="toggle-simplificado" class="toggle-option active" onclick="setCalculationMode('simplificado')">
-                                        Modo Simplificado (&lt; 50 kVA)
-                                    </div>
-                                    <div id="toggle-completo" class="toggle-option" onclick="setCalculationMode('completo')">
-                                        Modo Completo (Avançado)
-                                    </div>
-                                </div>
-
-                                <div class="data-table-wrapper">
-                                    <table class="data-table" id="units-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 35%;">Tipo de Unidade Consumidora</th>
-                                                <th style="width: 15%;">Quantidade</th>
-                                                <th style="width: 25%;">Carga Instalada Unitária (kW)
-                                                    <span class="tooltip-trigger" data-tooltip="Soma total das potências das tomadas, luzes e eletrodomésticos declarados.">
-                                                        <i data-lucide="info" style="width:14px; height:14px; margin-left:4px;"></i>
-                                                    </span>
-                                                </th>
-                                                <th style="width: 15%;">Ar Condicionado (Nº de aparelhos)</th>
-                                                <th style="width: 10%; text-align: center;">Ações</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="units-table-body">
-                                            <!-- Dynamic Rows Generated by JS -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <button class="btn-text-link" onclick="addUnitRow()">
-                                    <i data-lucide="plus-circle"></i> Adicionar Agrupamento de Unidades
-                                </button>
-                            </div>
-
-                            <!-- Section 3: Collective/Condo Cargas (Enabled in Complete Mode) -->
-                            <div class="form-section" id="section-condo-loads" style="display: none;">
-                                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">3. Cargas de Serviço Coletivas (Condomínio)</h3>
-                                <p class="section-subtitle">Motores, elevadores, bombas d'água e iluminação de áreas comuns.</p>
-                                
-                                <div class="grid-4">
-                                    <div class="form-group">
-                                        <label for="condo-lighting">Iluminação Condomínio (kW)</label>
-                                        <input type="number" id="condo-lighting" class="form-control-simple" value="5" oninput="updateProjectProgress()">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="condo-elevators">Nº Elevadores</label>
-                                        <input type="number" id="condo-elevators" class="form-control-simple" value="1" oninput="updateProjectProgress()">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="condo-elevator-power">Potência Elevador (kW)</label>
-                                        <input type="number" id="condo-elevator-power" class="form-control-simple" value="7.5" oninput="updateProjectProgress()">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="condo-pumps">Bombas Hidráulicas (kW)</label>
-                                        <input type="number" id="condo-pumps" class="form-control-simple" value="3.7" oninput="updateProjectProgress()">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Action Footer -->
-                            <div style="display: flex; justify-content: flex-end; gap: 16px; margin-top: 1.5rem;">
-                                <button class="btn btn-outlined" style="width: auto;" onclick="switchView('dashboard')">Cancelar</button>
-                                <button class="btn btn-primary" style="width: auto;" onclick="triggerCalculation()">
-                                    <i data-lucide="cpu"></i> Calcular Demanda Elétrica
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SUB-VIEW 3: RESULTADOS DO CÁLCULO -->
-                    <div id="view-results" class="fade-in" style="display: none;">
-                        <!-- Highlight Header Box -->
-                        <div class="results-header-box">
-                            <div class="results-header-left">
-                                <h3>Demanda Projetada Final</h3>
-                                <div class="results-value-big" id="result-total-kva">0.0 <span>kVA</span></div>
-                            </div>
-                            <div class="results-header-right">
-                                <span class="results-category-badge" id="result-category-label">Fornecimento: Categoria --</span>
-                                <div style="font-size: 0.85rem; opacity: 0.8;" id="result-voltage-detail">Tensão: 380/220V - Trifásico</div>
-                            </div>
-                        </div>
-
-                        <!-- Alerts and Validation Console -->
-                        <div id="conformity-alerts-container">
-                            <!-- Dynamic conformity alerts -->
-                        </div>
-
-                        <!-- Results Layout Split -->
-                        <div class="layout-split">
-                            <!-- Left: Accordion breakdown step-by-step -->
-                            <div>
-                                <h3 style="font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-primary);">Fatores e Distribuição de Carga</h3>
-                                
-                                <!-- Accordion Group 1 -->
-                                <div class="accordion" id="accordion-res-units">
-                                    <div class="accordion-header" onclick="toggleAccordion('accordion-res-units')">
-                                        <div class="accordion-header-left">
-                                            <i data-lucide="home"></i>
-                                            <span>Demandas das Unidades Residenciais (Apto)</span>
-                                        </div>
-                                        <div class="accordion-header-right">
-                                            <span class="accordion-val" id="result-res-total-val">0.0 kW</span>
-                                            <i data-lucide="chevron-down" class="accordion-icon-rotate"></i>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-content">
-                                        <div class="data-table-wrapper" style="margin-bottom: 0; border: none;">
-                                            <table class="data-table" style="font-size: 0.8rem; width: 100%;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Agrupamento</th>
-                                                        <th>Quantidade</th>
-                                                        <th>Carga Individual</th>
-                                                        <th>Carga Total Acumulada</th>
-                                                        <th>Fator Simultaneidade</th>
-                                                        <th>Demanda Reduzida</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="result-table-res-body">
-                                                    <!-- Dynamic breakdown rows -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Accordion Group 2 -->
-                                <div class="accordion" id="accordion-special-loads">
-                                    <div class="accordion-header" onclick="toggleAccordion('accordion-special-loads')">
-                                        <div class="accordion-header-left">
-                                            <i data-lucide="airplay"></i>
-                                            <span>Sistemas de Condicionamento de Ar</span>
-                                        </div>
-                                        <div class="accordion-header-right">
-                                            <span class="accordion-val" id="result-ac-total-val">0.0 kW</span>
-                                            <i data-lucide="chevron-down" class="accordion-icon-rotate"></i>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-content">
-                                        <p style="font-size: 0.85rem; margin-bottom: 12px; color: var(--text-secondary); line-height: 1.5;">
-                                            Os condicionadores de ar são agrupados separadamente. Aplica-se o Fator de Demanda segundo o anexo normativo para simultaneidade térmica.
-                                        </p>
-                                        <div id="result-ac-detail-content" style="font-size: 0.85rem; line-height: 1.6;"></div>
-                                    </div>
-                                </div>
-
-                                <!-- Accordion Group 3 -->
-                                <div class="accordion" id="accordion-condo">
-                                    <div class="accordion-header" onclick="toggleAccordion('accordion-condo')">
-                                        <div class="accordion-header-left">
-                                            <i data-lucide="building"></i>
-                                            <span>Carga Geral do Condomínio (Serviço)</span>
-                                        </div>
-                                        <div class="accordion-header-right">
-                                            <span class="accordion-val" id="result-condo-total-val">0.0 kW</span>
-                                            <i data-lucide="chevron-down" class="accordion-icon-rotate"></i>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-content">
-                                        <div id="result-condo-detail-content" style="font-size: 0.85rem; line-height: 1.6;"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Right: Chart and actions -->
-                            <div class="pane">
-                                <h3 style="font-weight: 700; font-size: 1.1rem; margin-bottom: 1.25rem;">Distribuição das Cargas</h3>
-                                <div class="chart-container">
-                                    <canvas id="loadsDistributionChart"></canvas>
-                                </div>
-
-                                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 2rem;">
-                                    <button class="btn btn-primary" onclick="switchView('memorial')">
-                                        <i data-lucide="file-check"></i> Gerar Memorial de Cálculo
-                                    </button>
-                                    <button class="btn btn-outlined" onclick="switchView('input-form')">
-                                        <i data-lucide="arrow-left"></i> Editar Valores da Entrada
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SUB-VIEW 4: TELA DO MEMORIAL E EXPORTAÇÃO -->
-                    <div id="view-memorial" class="fade-in" style="display: none;">
-                        <div class="pane" style="margin-bottom: 2rem;">
-                            <h3 style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">Visualização e Exportação de Arquivos</h3>
-                            <p class="section-subtitle">O memorial de cálculo é gerado dinamicamente com base nas tabelas aprovadas pela Neoenergia Pernambuco.</p>
-
-                            <!-- Export options -->
-                            <div class="export-options-grid">
-                                <div class="export-card" onclick="exportXML()">
-                                    <i data-lucide="file-code" style="color: #6366F1;"></i>
-                                    <h4>Download XML</h4>
-                                    <p>Arquivo para importação direta de dados técnicos da Neoenergia.</p>
-                                </div>
-                                <div class="export-card" onclick="exportCSV()">
-                                    <i data-lucide="sheet" style="color: #10B981;"></i>
-                                    <h4>Download Excel (CSV)</h4>
-                                    <p>Planilha contendo o memorial aberto contendo as equações.</p>
-                                </div>
-                                <div class="export-card" onclick="printMemorial()">
-                                    <i data-lucide="printer" style="color: var(--primary);"></i>
-                                    <h4>Imprimir / Salvar PDF</h4>
-                                    <p>Gera layout em tamanho A4 pronto para assinatura física ou digital.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Document Sheet Simulation (A4 Page) -->
-                        <div class="memorial-wrapper">
-                            <div class="memorial-page" id="memorial-printable-page">
-                                <div class="memorial-header">
-                                    <div class="memorial-header-left">
-                                        <img src="logo_neoenergia.png" alt="Logo Neoenergia" style="height: 38px; object-fit: contain;">
-                                        <div>
-                                            <h4 style="font-size: 12px; margin: 0; line-height: 1; font-weight: 800; letter-spacing: -0.5px;">NeoDemanda</h4>
-                                            <span style="font-size: 8px; color: #555555; text-transform: uppercase; font-weight: 600;">Múltiplas Unidades</span>
-                                        </div>
-                                    </div>
-                                    <div class="memorial-header-title">
-                                        <h4>Memorial de Cálculo de Demanda</h4>
-                                        <p>Conforme Norma Técnica Neoenergia Pernambuco</p>
-                                    </div>
-                                </div>
-
-                                <div class="memorial-title">
-                                    <h3>Memorial Técnico Descritivo</h3>
-                                    <p>Projeto de Dimensionamento do Ramal de Entrada Coletivo</p>
-                                </div>
-
-                                <div class="memorial-section">
-                                    <div class="memorial-section-title">1. Dados Gerais do Empreendimento</div>
-                                    <div class="memorial-grid-info">
-                                        <div class="info-item-print">Nome do Projeto: <span id="print-proj-name">Residencial Teste</span></div>
-                                        <div class="info-item-print">Cidade/UF: <span id="print-proj-city">Recife - PE</span></div>
-                                        <div class="info-item-print">CEP da Obra: <span id="print-proj-cep">50000-000</span></div>
-                                        <div class="info-item-print">Área Total Construída: <span id="print-proj-area">0 m²</span></div>
-                                        <div class="info-item-print">Nº Pavimentos: <span id="print-proj-floors">0</span></div>
-                                        <div class="info-item-print">Data de Emissão: <span id="print-proj-date">--/--/----</span></div>
-                                    </div>
-                                </div>
-
-                                <div class="memorial-section">
-                                    <div class="memorial-section-title">2. Descrição das Unidades Consumidoras</div>
-                                    <table class="memorial-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Descrição do Grupo de Cargas</th>
-                                                <th>Nº de Unidades</th>
-                                                <th>Carga Unitária (kW)</th>
-                                                <th>Ar Condicionado (Qtd)</th>
-                                                <th>Carga Total (kW)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="print-table-units-body">
-                                            <!-- Dyn rows -->
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="memorial-section">
-                                    <div class="memorial-section-title">3. Resumo Técnico do Dimensionamento</div>
-                                    <table class="memorial-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Agrupamento de Cargas</th>
-                                                <th>Potência Instalada (kW)</th>
-                                                <th>Fator Simultaneidade Aplicado</th>
-                                                <th>Demanda Coletiva (kW)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="print-table-breakdown-body">
-                                            <!-- Dyn summary breakdown -->
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="memorial-section">
-                                    <div class="memorial-section-title">4. Enquadramento e Proteção</div>
-                                    <div style="background-color: #F8F9FA; padding: 12px; border: 1px solid #E2E8F0; font-size: 11px;">
-                                        <p><strong>Demanda Total Calculada:</strong> <span id="print-total-demand-val">0.0 kVA</span></p>
-                                        <p><strong>Categoria de Atendimento da Concessionária:</strong> <span id="print-category-val">N/A</span></p>
-                                        <p><strong>Tensão de Atendimento Nominal:</strong> 380 Volts (Fase-Fase) / 220 Volts (Fase-Neutro) - Trifásico</p>
-                                        <p><strong>Notas de Projeto:</strong> Proteção termomagnética geral calculada conforme critérios de dimensionamento da tabela técnica 3 da SM04.2-PE.</p>
-                                    </div>
-                                </div>
-
-                                <div class="memorial-signatures">
-                                    <div class="signature-line">
-                                        <p><strong>Projetista Responsável</strong></p>
-                                        <p>Registro CREA/PE nº: ______________________</p>
-                                    </div>
-                                    <div class="signature-line">
-                                        <p><strong>Aprovação - Neoenergia Pernambuco</strong></p>
-                                        <p>Analista Técnico</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Finalize project subview action buttons -->
-                        <div style="display: flex; justify-content: flex-end; gap: 16px;">
-                            <button class="btn btn-outlined" style="width: auto;" onclick="switchView('results')">Voltar aos Resultados</button>
-                            <button class="btn btn-primary" id="btn-finalize-sub" style="width: auto; background-color: var(--neo-green); box-shadow: 0 4px 12px rgba(0, 167, 87, 0.2);" onclick="finalizeSubmission()">
-                                <i data-lucide="check-square"></i> Marcar como Pronto para Submissão
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-            </main>
-
-            <!-- MOBILE BOTTOM TAB NAVIGATION BAR -->
-            <nav class="mobile-bottom-nav">
-                <a href="#" class="mobile-nav-item active" id="mob-menu-dashboard" onclick="switchView('dashboard')">
-                    <i data-lucide="layout-dashboard"></i>
-                    <span>Início</span>
-                </a>
-                <a href="#" class="mobile-nav-item" id="mob-menu-input-form" onclick="switchView('input-form')">
-                    <i data-lucide="file-edit"></i>
-                    <span>Dados</span>
-                </a>
-                <a href="#" class="mobile-nav-item" id="mob-menu-results" onclick="switchView('results')">
-                    <i data-lucide="calculator"></i>
-                    <span>Cálculo</span>
-                </a>
-                <a href="#" class="mobile-nav-item" id="mob-menu-memorial" onclick="switchView('memorial')">
-                    <i data-lucide="file-text"></i>
-                    <span>Memorial</span>
-                </a>
+            </div>
+            <nav class="landing-nav">
+                <a href="#sobre">O que é</a>
+                <a href="#como-resolve">Benefícios</a>
+                <a href="#para-quem">Para quem</a>
+                <a href="#faq">Normas</a>
             </nav>
-        </section>
+            <div>
+                <a href="login.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.88rem; width: auto; box-shadow: none;">
+                    Acessar Plataforma <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+                </a>
+            </div>
+        </div>
+    </header>
 
-    </div>
+    <!-- HERO SECTION -->
+    <section class="landing-hero-section">
+        <div class="landing-container hero-grid">
+            <div class="hero-text-content">
+                <span class="hero-badge">Cálculo de Múltiplas Unidades</span>
+                <h2>Validação automática de demanda elétrica sem erros manuais.</h2>
+                <p>O NeoDemanda automatiza a aplicação de fatores de simultaneidade segundo as normas da Neoenergia Pernambuco, reuniando a taxa histórica de reprovação de projetos elétricos.</p>
+                <div class="hero-cta-group">
+                    <a href="login.html" class="btn btn-primary" style="width: auto; padding: 14px 28px;">
+                        <i data-lucide="play-circle"></i> Iniciar Dimensionamento
+                    </a>
+                    <a href="#como-resolve" class="btn btn-outlined" style="width: auto; padding: 14px 24px;">
+                        Ver Como Funciona
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <!-- Visual simulation of the dashboard mockup structure in HTML/CSS -->
+                <div class="hero-mockup-window">
+                    <div class="mockup-header">
+                        <div class="mockup-dots"><span></span><span></span><span></span></div>
+                        <div class="mockup-title-url">neodemanda.neoenergia.com/projeto/1</div>
+                    </div>
+                    <div class="mockup-body-preview">
+                        <div class="mockup-sidebar"></div>
+                        <div class="mockup-content">
+                            <div class="mockup-metric-grid">
+                                <div class="mockup-card">
+                                    <span style="font-size: 8px; color: var(--text-secondary); text-transform: uppercase;">DEMANDA TOTAL</span>
+                                    <strong style="color: var(--neo-orange); font-size: 14px; display: block; margin-top: 4px;">142.5 kVA</strong>
+                                </div>
+                                <div class="mockup-card">
+                                    <span style="font-size: 8px; color: var(--text-secondary); text-transform: uppercase;">CONFORMIDADE</span>
+                                    <strong style="color: var(--success); font-size: 12px; display: block; margin-top: 4px;">✓ CONFORME</strong>
+                                </div>
+                            </div>
+                            <div class="mockup-chart-placeholder">
+                                <div class="chart-arc"></div>
+                                <span style="font-size: 7px; color: var(--text-secondary);">Carga Distribuída</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- JS Application Script Modules (In Dependency Order) -->
-    <script src="state.js"></script>
-    <script src="calculations.js"></script>
-    <script src="exporters.js"></script>
-    <script src="app.js"></script>
+    <!-- SECTION: WHAT & HOW IT SOLVES -->
+    <section id="sobre" class="landing-section bg-light-gray">
+        <div class="landing-container">
+            <div class="section-header-center">
+                <h2>A Solução Definitiva Contra Reprovações de Projetos</h2>
+                <p>Desenvolvida para eliminar erros comuns de dimensionamento e garantir aprovações rápidas junto à concessionária.</p>
+            </div>
+            
+            <div class="features-grid" id="como-resolve">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper" style="background-color: var(--success-light); color: var(--success);">
+                        <i data-lucide="cpu"></i>
+                    </div>
+                    <h3>Cálculos Normativos Livres de Erros</h3>
+                    <p>Fatores de simultaneidade residencial e comercial aplicados diretamente através de regras codificadas em conformidade estrita com a norma <strong>SM04.2-PE</strong>.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper" style="background-color: var(--success-light); color: var(--success);">
+                        <i data-lucide="shield-check"></i>
+                    </div>
+                    <h3>Validador de Conformidade Ativo</h3>
+                    <p>O sistema indica imediatamente se o projeto atende à categoria de baixa tensão ou se exige proteção média tensão (subestação dedicada), prevenindo re-trabalhos.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper" style="background-color: var(--info-light); color: var(--info);">
+                        <i data-lucide="file-output"></i>
+                    </div>
+                    <h3>Exportação Homologada</h3>
+                    <p>Gere relatórios técnicos padronizados e faça o download do arquivo <strong>XML estruturado</strong> exigido pela Neoenergia Pernambuco para importação direta no sistema de auditoria.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: TARGET AUDIENCE -->
+    <section id="para-quem" class="landing-section">
+        <div class="landing-container">
+            <div class="section-header-center">
+                <h2>Para Quem é Destinado?</h2>
+                <p>Uma plataforma integrada que otimiza o fluxo de ponta a ponta, ligando projetistas elétricos à equipe de avaliação da Neoenergia.</p>
+            </div>
+
+            <div class="audience-grid">
+                <!-- Card 1 -->
+                <div class="audience-card">
+                    <div class="audience-card-top">
+                        <i data-lucide="drafting-compass"></i>
+                        <h3>Projetistas e Engenheiros</h3>
+                    </div>
+                    <p>Elimine o cálculo manual de planilhas complexas. Ganhe segurança técnica e valide os limites de queda de tensão e capacidade do ramal antes de enviar para análise.</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="audience-card">
+                    <div class="audience-card-top">
+                        <i data-lucide="check-square"></i>
+                        <h3>Analistas da Concessionária</h3>
+                    </div>
+                    <p>Agilize a auditoria dos projetos recebendo arquivos XML padronizados. Reduza o tempo de atendimento e a fila de projetos pendentes de avaliação técnica.</p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="audience-card">
+                    <div class="audience-card-top">
+                        <i data-lucide="building-2"></i>
+                        <h3>Clientes e Construtoras</h3>
+                    </div>
+                    <p>Garanta que a infraestrutura elétrica dos condomínios residenciais e complexos comerciais seja aprovada sem atrasar os prazos de entrega das obras.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: TECHNICAL FAQ / NORMATIVES -->
+    <section id="faq" class="landing-section bg-light-gray">
+        <div class="landing-container" style="max-width: 800px;">
+            <div class="section-header-center">
+                <h2>Regulamentações e Normas Técnicas</h2>
+                <p>Entenda as bases técnicas regulamentadas incorporadas na ferramenta.</p>
+            </div>
+
+            <div class="faq-accordion-group">
+                <details class="faq-item">
+                    <summary class="faq-question">Quais normas técnicas o sistema segue?</summary>
+                    <div class="faq-answer">
+                        <p>O NeoDemanda segue integralmente o regulamento técnico <strong>SM04.2-PE</strong> da Neoenergia Pernambuco, que dita os critérios de fornecimento em tensão secundária para edificações de múltiplas unidades consumidoras.</p>
+                    </div>
+                </details>
+                
+                <details class="faq-item">
+                    <summary class="faq-question">Qual é o limite para submissão simplificada?</summary>
+                    <div class="faq-answer">
+                        <p>Projetos com demanda calculada de até 50 kVA que não apresentem cargas especiais complexas (motores trifásicos robustos, elevadores de alta potência) podem ser dimensionados pelo Modo Simplificado da aplicação.</p>
+                    </div>
+                </details>
+                
+                <details class="faq-item">
+                    <summary class="faq-question">Quando o projeto é enquadrado como Subestação Própria?</summary>
+                    <div class="faq-answer">
+                        <p>Sempre que a demanda resultante do cálculo ultrapassar o limite técnico de <strong>75 kVA</strong>, o enquadramento na concessionária é alterado e o sistema gerará o alerta normativo informando a necessidade de projeto de posto de transformação dedicado.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: CALL TO ACTION -->
+    <section class="landing-cta-block">
+        <div class="landing-container" style="text-align: center; max-width: 700px;">
+            <h2>Pronto para validar seus projetos?</h2>
+            <p style="margin-bottom: 2rem; opacity: 0.9; font-size: 1.1rem;">Reduza o tempo de aprovação de 30 dias para análise imediata com cálculos 100% corretos.</p>
+            <a href="login.html" class="btn btn-primary" style="width: auto; padding: 15px 35px; background-color: var(--white); color: var(--primary); box-shadow: none;">
+                Acessar Plataforma NeoDemanda <i data-lucide="arrow-right" style="width: 16px; height: 16px; margin-left: 6px;"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="landing-footer">
+        <div class="landing-container footer-flex-bottom">
+            <div>
+                <p><strong>NeoDemanda</strong> - Grupo Neoenergia Pernambuco</p>
+                <p style="font-size: 11px; opacity: 0.6; margin-top: 4px;">Portal interno homologado para auditoria e submissão técnica.</p>
+            </div>
+            <div style="text-align: right; font-size: 11px; opacity: 0.6;">
+                <p>© 2026 Neoenergia Pernambuco. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Init icons
+        lucide.createIcons();
+    </script>
 </body>
 </html>
