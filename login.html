@@ -12,7 +12,7 @@
 <body style="background-color: var(--bg-light); min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;">
 
     <div id="app-container">
-        <!-- STANDALONE LOGIN SCREEN -->
+        <!-- STANDALONE LOGIN SCREEN (DEMO VERSION ONLY) -->
         <section class="screen login-screen active">
             <div class="login-left">
                 <div class="brand-wrapper">
@@ -33,8 +33,7 @@
             <div class="login-right">
                 <div class="login-form-wrapper">
                     <div class="login-header">
-                        <!-- Add small logo for mobile representation when left panel is hidden -->
-                        <img src="logo_neoenergia.png" class="mobile-only-logo" alt="Logo Neoenergia" style="height: 48px; display: none; margin-bottom: 1rem; object-fit: contain;">
+                        <img src="logo_neoenergia.png" class="mobile-only-logo" alt="Logo Neoenergia" style="height: 48px; display: none; margin-bottom: 1.5rem; object-fit: contain;">
                         <style>
                             @media (max-width: 768px) {
                                 .mobile-only-logo {
@@ -42,38 +41,21 @@
                                 }
                             }
                         </style>
-                        <h3>Acessar Sistema</h3>
-                        <p>Entre com suas credenciais de projetista credenciado.</p>
+                        <h3>Acesso ao Portal</h3>
+                        <p>Plataforma interna de homologação de projetos da intranet Neoenergia.</p>
                     </div>
 
-                    <form id="login-form" onsubmit="event.preventDefault(); handleLogin();">
-                        <div class="form-group">
-                            <label for="login-email">E-mail Corporativo</label>
-                            <div class="input-with-icon">
-                                <i data-lucide="mail"></i>
-                                <input type="email" id="login-email" class="form-control" placeholder="engenheiro@email.com" required value="projetista@neoenergia.com.br">
-                            </div>
+                    <!-- Demo Access Box -->
+                    <div class="custom-alert success" style="margin-bottom: 2rem; border-left-color: var(--neo-blue); background-color: var(--info-light); color: #1e3a8a; padding: 1.2rem;">
+                        <i data-lucide="shield-alert" style="color: var(--neo-blue);"></i>
+                        <div class="custom-alert-content">
+                            <h4 style="color: #1e3a8a; font-weight: 800;">Modo Demonstração Ativo</h4>
+                            <p style="font-size: 0.82rem; line-height: 1.45; opacity: 0.9;">Para fins de validação técnica e homologação do protótipo, o acesso está configurado exclusivamente para a conta de demonstração.</p>
                         </div>
-
-                        <div class="form-group">
-                            <label for="login-password">Senha de Acesso</label>
-                            <div class="input-with-icon">
-                                <i data-lucide="lock"></i>
-                                <input type="password" id="login-password" class="form-control" placeholder="••••••••" required value="senha123">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
-                            <i data-lucide="log-in"></i> Entrar
-                        </button>
-                    </form>
-
-                    <div class="divider">
-                        <span>ou</span>
                     </div>
 
-                    <button class="btn btn-outlined" onclick="continueAsGuest()">
-                        <i data-lucide="user-check"></i> Continuar como Visitante (Modo Demo)
+                    <button class="btn btn-primary" onclick="continueAsGuest()">
+                        <i data-lucide="play"></i> Acessar Modo Demonstração
                     </button>
                 </div>
             </div>
@@ -89,20 +71,8 @@
             window.location.href = 'index.html';
         }
 
-        function handleLogin() {
-            const email = document.getElementById('login-email').value;
-            const userName = email.split('@')[0];
-            
-            // Save to Session Storage
-            sessionStorage.setItem('neodemanda_user', userName);
-            sessionStorage.setItem('neodemanda_role', 'Engenheiro Projetista');
-            
-            // Redirect to index page
-            window.location.href = 'index.html';
-        }
-
         function continueAsGuest() {
-            sessionStorage.setItem('neodemanda_user', 'Projetista Convidado');
+            sessionStorage.setItem('neodemanda_user', 'Projetista Visitante');
             sessionStorage.setItem('neodemanda_role', 'Modo Demonstração');
             window.location.href = 'index.html';
         }
