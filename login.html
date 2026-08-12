@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acessar NeoDemanda - Neoenergia Pernambuco</title>
+    <!-- CSS Style sheets -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body style="background-color: var(--bg-light); min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+
+    <div id="app-container">
+        <!-- STANDALONE LOGIN SCREEN -->
+        <section class="screen login-screen active">
+            <div class="login-left">
+                <div class="brand-wrapper">
+                    <img src="logo_neoenergia.png" alt="Neoenergia Pernambuco Logo" style="height: 52px; object-fit: contain; filter: brightness(0) invert(1);">
+                    <div class="brand-text">
+                        <h1>NeoDemanda</h1>
+                        <span>Neoenergia Pernambuco</span>
+                    </div>
+                </div>
+                <div class="login-left-content">
+                    <h2>Cálculo inteligente e seguro de demanda.</h2>
+                    <p>Otimize a submissão de projetos elétricos com múltiplas unidades consumidoras. Em conformidade automática com as normas técnicas vigentes da Neoenergia Pernambuco.</p>
+                </div>
+                <div class="login-left-footer">
+                    © 2026 Neoenergia Pernambuco. Todos os direitos reservados.
+                </div>
+            </div>
+            <div class="login-right">
+                <div class="login-form-wrapper">
+                    <div class="login-header">
+                        <!-- Add small logo for mobile representation when left panel is hidden -->
+                        <img src="logo_neoenergia.png" class="mobile-only-logo" alt="Logo Neoenergia" style="height: 48px; display: none; margin-bottom: 1rem; object-fit: contain;">
+                        <style>
+                            @media (max-width: 768px) {
+                                .mobile-only-logo {
+                                    display: block !important;
+                                }
+                            }
+                        </style>
+                        <h3>Acessar Sistema</h3>
+                        <p>Entre com suas credenciais de projetista credenciado.</p>
+                    </div>
+
+                    <form id="login-form" onsubmit="event.preventDefault(); handleLogin();">
+                        <div class="form-group">
+                            <label for="login-email">E-mail Corporativo</label>
+                            <div class="input-with-icon">
+                                <i data-lucide="mail"></i>
+                                <input type="email" id="login-email" class="form-control" placeholder="engenheiro@email.com" required value="projetista@neoenergia.com.br">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login-password">Senha de Acesso</label>
+                            <div class="input-with-icon">
+                                <i data-lucide="lock"></i>
+                                <input type="password" id="login-password" class="form-control" placeholder="••••••••" required value="senha123">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
+                            <i data-lucide="log-in"></i> Entrar
+                        </button>
+                    </form>
+
+                    <div class="divider">
+                        <span>ou</span>
+                    </div>
+
+                    <button class="btn btn-outlined" onclick="continueAsGuest()">
+                        <i data-lucide="user-check"></i> Continuar como Visitante (Modo Demo)
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Initialize icons
+        lucide.createIcons();
+
+        // Check if already logged in, redirect to index
+        if (sessionStorage.getItem('neodemanda_user')) {
+            window.location.href = 'index.html';
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const userName = email.split('@')[0];
+            
+            // Save to Session Storage
+            sessionStorage.setItem('neodemanda_user', userName);
+            sessionStorage.setItem('neodemanda_role', 'Engenheiro Projetista');
+            
+            // Redirect to index page
+            window.location.href = 'index.html';
+        }
+
+        function continueAsGuest() {
+            sessionStorage.setItem('neodemanda_user', 'Projetista Convidado');
+            sessionStorage.setItem('neodemanda_role', 'Modo Demonstração');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

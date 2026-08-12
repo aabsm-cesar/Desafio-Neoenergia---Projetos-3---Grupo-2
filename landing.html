@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoDemanda - Sistema de Validação Técnica | Neoenergia Pernambuco</title>
+    <!-- CSS Style sheets -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body style="background-color: var(--white); min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- LANDING HEADER -->
+    <header class="landing-header-bar">
+        <div class="landing-container header-flex">
+            <div class="brand-wrapper">
+                <img src="logo_neoenergia.png" alt="Neoenergia Pernambuco Logo" style="height: 45px; object-fit: contain; margin-right: 4px;">
+                <div class="brand-text" style="color: var(--bg-dark);">
+                    <h1 style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.8px;">NeoDemanda</h1>
+                    <span style="color: var(--text-secondary); font-size: 0.72rem; text-transform: uppercase; font-weight: 600;">Neoenergia Pernambuco</span>
+                </div>
+            </div>
+            <nav class="landing-nav">
+                <a href="#sobre">O que é</a>
+                <a href="#como-resolve">Benefícios</a>
+                <a href="#para-quem">Para quem</a>
+                <a href="#faq">Normas</a>
+            </nav>
+            <div>
+                <a href="login.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.88rem; width: auto; box-shadow: none;">
+                    Acessar Plataforma <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="landing-hero-section">
+        <div class="landing-container hero-grid">
+            <div class="hero-text-content">
+                <span class="hero-badge">Cálculo de Múltiplas Unidades</span>
+                <h2>Validação automática de demanda elétrica sem erros manuais.</h2>
+                <p>O NeoDemanda automatiza a aplicação de fatores de simultaneidade segundo as normas da Neoenergia Pernambuco, reduzindo a taxa histórica de reprovação de projetos elétricos.</p>
+                <div class="hero-cta-group">
+                    <a href="login.html" class="btn btn-primary" style="width: auto; padding: 14px 28px;">
+                        <i data-lucide="play-circle"></i> Iniciar Dimensionamento
+                    </a>
+                    <a href="#como-resolve" class="btn btn-outlined" style="width: auto; padding: 14px 24px;">
+                        Ver Como Funciona
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <!-- Visual simulation of the dashboard mockup structure in HTML/CSS -->
+                <div class="hero-mockup-window">
+                    <div class="mockup-header">
+                        <div class="mockup-dots"><span></span><span></span><span></span></div>
+                        <div class="mockup-title-url">neodemanda.neoenergia.com/projeto/1</div>
+                    </div>
+                    <div class="mockup-body-preview">
+                        <div class="mockup-sidebar"></div>
+                        <div class="mockup-content">
+                            <div class="mockup-metric-grid">
+                                <div class="mockup-card">
+                                    <span style="font-size: 8px; color: var(--text-secondary); text-transform: uppercase;">DEMANDA TOTAL</span>
+                                    <strong style="color: var(--neo-orange); font-size: 14px; display: block; margin-top: 4px;">142.5 kVA</strong>
+                                </div>
+                                <div class="mockup-card">
+                                    <span style="font-size: 8px; color: var(--text-secondary); text-transform: uppercase;">CONFORMIDADE</span>
+                                    <strong style="color: var(--success); font-size: 12px; display: block; margin-top: 4px;">✓ CONFORME</strong>
+                                </div>
+                            </div>
+                            <div class="mockup-chart-placeholder">
+                                <div class="chart-arc"></div>
+                                <span style="font-size: 7px; color: var(--text-secondary);">Carga Distribuída</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: WHAT & HOW IT SOLVES -->
+    <section id="sobre" class="landing-section bg-light-gray">
+        <div class="landing-container">
+            <div class="section-header-center">
+                <h2>A Solução Definitiva Contra Reprovações de Projetos</h2>
+                <p>Desenvolvida para eliminar erros comuns de dimensionamento e garantir aprovações rápidas junto à concessionária.</p>
+            </div>
+            
+            <div class="features-grid" id="como-resolve">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper" style="background-color: var(--success-light); color: var(--success);">
+                        <i data-lucide="cpu"></i>
+                    </div>
+                    <h3>Cálculos Normativos Livres de Erros</h3>
+                    <p>Fatores de simultaneidade residencial e comercial aplicados diretamente através de regras codificadas em conformidade estrita com a norma <strong>SM04.2-PE</strong>.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper" style="background-color: var(--success-light); color: var(--success);">
+                        <i data-lucide="shield-check"></i>
+                    </div>
+                    <h3>Validador de Conformidade Ativo</h3>
+                    <p>O sistema indica imediatamente se o projeto atende à categoria de baixa tensão ou se exige proteção média tensão (subestação dedicada), prevenindo re-trabalhos.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper" style="background-color: var(--info-light); color: var(--info);">
+                        <i data-lucide="file-output"></i>
+                    </div>
+                    <h3>Exportação Homologada</h3>
+                    <p>Gere relatórios técnicos padronizados e faça o download do arquivo <strong>XML estruturado</strong> exigido pela Neoenergia Pernambuco para importação direta no sistema de auditoria.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: TARGET AUDIENCE -->
+    <section id="para-quem" class="landing-section">
+        <div class="landing-container">
+            <div class="section-header-center">
+                <h2>Para Quem é Destinado?</h2>
+                <p>Uma plataforma integrada que otimiza o fluxo de ponta a ponta, ligando projetistas elétricos à equipe de avaliação da Neoenergia.</p>
+            </div>
+
+            <div class="audience-grid">
+                <!-- Card 1 -->
+                <div class="audience-card">
+                    <div class="audience-card-top">
+                        <i data-lucide="drafting-compass"></i>
+                        <h3>Projetistas e Engenheiros</h3>
+                    </div>
+                    <p>Elimine o cálculo manual de planilhas complexas. Ganhe segurança técnica e valide os limites de queda de tensão e capacidade do ramal antes de enviar para análise.</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="audience-card">
+                    <div class="audience-card-top">
+                        <i data-lucide="check-square"></i>
+                        <h3>Analistas da Concessionária</h3>
+                    </div>
+                    <p>Agilize a auditoria dos projetos recebendo arquivos XML padronizados. Reduza o tempo de atendimento e a fila de projetos pendentes de avaliação técnica.</p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="audience-card">
+                    <div class="audience-card-top">
+                        <i data-lucide="building-2"></i>
+                        <h3>Clientes e Construtoras</h3>
+                    </div>
+                    <p>Garanta que a infraestrutura elétrica dos condomínios residenciais e complexos comerciais seja aprovada sem atrasar os prazos de entrega das obras.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: TECHNICAL FAQ / NORMATIVES -->
+    <section id="faq" class="landing-section bg-light-gray">
+        <div class="landing-container" style="max-width: 800px;">
+            <div class="section-header-center">
+                <h2>Regulamentações e Normas Técnicas</h2>
+                <p>Entenda as bases técnicas regulamentadas incorporadas na ferramenta.</p>
+            </div>
+
+            <div class="faq-accordion-group">
+                <details class="faq-item">
+                    <summary class="faq-question">Quais normas técnicas o sistema segue?</summary>
+                    <div class="faq-answer">
+                        <p>O NeoDemanda segue integralmente o regulamento técnico <strong>SM04.2-PE</strong> da Neoenergia Pernambuco, que dita os critérios de fornecimento em tensão secundária para edificações de múltiplas unidades consumidoras.</p>
+                    </div>
+                </details>
+                
+                <details class="faq-item">
+                    <summary class="faq-question">Qual é o limite para submissão simplificada?</summary>
+                    <div class="faq-answer">
+                        <p>Projetos com demanda calculada de até 50 kVA que não apresentem cargas especiais complexas (motores trifásicos robustos, elevadores de alta potência) podem ser dimensionados pelo Modo Simplificado da aplicação.</p>
+                    </div>
+                </details>
+                
+                <details class="faq-item">
+                    <summary class="faq-question">Quando o projeto é enquadrado como Subestação Própria?</summary>
+                    <div class="faq-answer">
+                        <p>Sempre que a demanda resultante do cálculo ultrapassar o limite técnico de <strong>75 kVA</strong>, o enquadramento na concessionária é alterado e o sistema gerará o alerta normativo informando a necessidade de projeto de posto de transformação dedicado.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: CALL TO ACTION -->
+    <section class="landing-cta-block">
+        <div class="landing-container" style="text-align: center; max-width: 700px;">
+            <h2>Pronto para validar seus projetos?</h2>
+            <p style="margin-bottom: 2rem; opacity: 0.9; font-size: 1.1rem;">Reduza o tempo de aprovação de 30 dias para análise imediata com cálculos 100% corretos.</p>
+            <a href="login.html" class="btn btn-primary" style="width: auto; padding: 15px 35px; background-color: var(--white); color: var(--primary); box-shadow: none;">
+                Acessar Plataforma NeoDemanda <i data-lucide="arrow-right" style="width: 16px; height: 16px; margin-left: 6px;"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="landing-footer">
+        <div class="landing-container footer-flex-bottom">
+            <div>
+                <p><strong>NeoDemanda</strong> - Grupo Neoenergia Pernambuco</p>
+                <p style="font-size: 11px; opacity: 0.6; margin-top: 4px;">Portal interno homologado para auditoria e submissão técnica.</p>
+            </div>
+            <div style="text-align: right; font-size: 11px; opacity: 0.6;">
+                <p>© 2026 Neoenergia Pernambuco. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Init icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
