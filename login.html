@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acessar NeoDemanda - Neoenergia Pernambuco</title>
-    <!-- CSS Style sheets -->
-    <link rel="stylesheet" href="style.css">
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Entry point (estilos + JS da página) -->
+    <script type="module" src="/src/main-login.js"></script>
 </head>
 <body style="background-color: var(--bg-light); min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;">
 
@@ -16,7 +16,7 @@
         <section class="screen login-screen active">
             <div class="login-left">
                 <div class="brand-wrapper">
-                    <img src="logo_neoenergia.png" alt="Neoenergia Pernambuco Logo" style="height: 52px; object-fit: contain; filter: brightness(0) invert(1);">
+                    <img src="/assets/logo_neoenergia.png" alt="Neoenergia Pernambuco Logo" style="height: 52px; object-fit: contain; filter: brightness(0) invert(1);">
                     <div class="brand-text">
                         <h1>NeoDemanda</h1>
                         <span>Neoenergia Pernambuco</span>
@@ -33,7 +33,7 @@
             <div class="login-right">
                 <div class="login-form-wrapper">
                     <div class="login-header">
-                        <img src="logo_neoenergia.png" class="mobile-only-logo" alt="Logo Neoenergia" style="height: 48px; display: none; margin-bottom: 1.5rem; object-fit: contain;">
+                        <img src="/assets/logo_neoenergia.png" class="mobile-only-logo" alt="Logo Neoenergia" style="height: 48px; display: none; margin-bottom: 1.5rem; object-fit: contain;">
                         <style>
                             @media (max-width: 768px) {
                                 .mobile-only-logo {
@@ -62,20 +62,5 @@
         </section>
     </div>
 
-    <script>
-        // Initialize icons
-        lucide.createIcons();
-
-        // Check if already logged in, redirect to index
-        if (sessionStorage.getItem('neodemanda_user')) {
-            window.location.href = 'app.html';
-        }
-
-        function continueAsGuest() {
-            sessionStorage.setItem('neodemanda_user', 'Projetista Visitante');
-            sessionStorage.setItem('neodemanda_role', 'Modo Demonstração');
-            window.location.href = 'app.html';
-        }
-    </script>
 </body>
 </html>

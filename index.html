@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeoDemanda - Sistema de Validação Técnica | Neoenergia Pernambuco</title>
-    <!-- CSS Style sheets -->
-    <link rel="stylesheet" href="style.css">
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Entry point (estilos + JS da página) -->
+    <script type="module" src="/src/main-landing.js"></script>
 </head>
 <body style="background-color: var(--white); min-height: 100vh; display: flex; flex-direction: column;">
 
@@ -15,7 +15,7 @@
     <header class="landing-header-bar">
         <div class="landing-container header-flex">
             <div class="brand-wrapper">
-                <img src="logo_neoenergia.png" alt="Neoenergia Pernambuco Logo" style="height: 45px; object-fit: contain; margin-right: 4px;">
+                <img src="/assets/logo_neoenergia.png" alt="Neoenergia Pernambuco Logo" style="height: 45px; object-fit: contain; margin-right: 4px;">
                 <div class="brand-text" style="color: var(--bg-dark);">
                     <h1 style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.8px;">NeoDemanda</h1>
                     <span style="color: var(--text-secondary); font-size: 0.72rem; text-transform: uppercase; font-weight: 600;">Neoenergia Pernambuco</span>
@@ -217,9 +217,5 @@
         </div>
     </footer>
 
-    <script>
-        // Init icons
-        lucide.createIcons();
-    </script>
 </body>
 </html>

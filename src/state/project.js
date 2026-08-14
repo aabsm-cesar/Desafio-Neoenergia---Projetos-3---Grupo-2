@@ -1,36 +1,46 @@
-// NeoDemanda - State Management Module
-// Developed for Neoenergia Pernambuco
+// NeoDemanda - Módulo de Estado (Projeto atual + Histórico)
+// Centraliza tudo que antes vivia solto em state.js
 
-// Initial Global State
-let currentProject = {
-    id: null,
-    name: '',
-    cep: '',
-    area: '',
-    floors: '',
-    use: 'residencial',
-    mode: 'simplificado', // simplificado | completo
-    status: 'Rascunho', // Rascunho | Em cálculo | Pronto
-    units: [],
-    condoLoads: {
-        lighting: 5,
-        elevators: 1,
-        elevatorPower: 7.5,
-        pumps: 3.7
-    },
-    calculations: {
-        totalDemandKw: 0,
-        totalDemandKva: 0,
-        category: '--',
-        resDemand: 0,
-        acDemand: 0,
-        condoDemand: 0
-    }
-};
+export function createEmptyProject() {
+    return {
+        id: null,
+        name: '',
+        cep: '',
+        area: '',
+        floors: '',
+        use: 'residencial',
+        mode: 'simplificado', // simplificado | completo
+        status: 'Rascunho', // Rascunho | Em cálculo | Pronto
+        units: [],
+        condoLoads: {
+            lighting: 5,
+            elevators: 1,
+            elevatorPower: 7.5,
+            pumps: 3.7
+        },
+        calculations: {
+            totalDemandKw: 0,
+            totalDemandKva: 0,
+            category: '--',
+            resDemand: 0,
+            acDemand: 0,
+            condoDemand: 0
+        }
+    };
+}
 
-let projectsHistory = [];
+// Projeto ativo (via binding viva do ES module: quem importa `currentProject`
+// sempre lê o valor mais recente, mas só este módulo pode reatribuí-lo)
+export let currentProject = createEmptyProject();
 
-// Default Demo Projects to populate the system
+// Substitui totalmente o projeto ativo (equivalente ao antigo `currentProject = {...}`)
+export function setCurrentProject(project) {
+    currentProject = project;
+}
+
+export let projectsHistory = [];
+
+// Projetos de demonstração usados quando não há nada salvo no localStorage
 const DEMO_PROJECTS = [
     {
         id: 'proj-1',
@@ -101,18 +111,32 @@ const DEMO_PROJECTS = [
     }
 ];
 
-// Load projects from localStorage or use defaults
-function loadProjectsFromStorage() {
+// Carrega os projetos do localStorage (ou usa os projetos de demonstração)
+export function loadProjectsFromStorage() {
     const stored = localStorage.getItem('neodemanda_projects');
     if (stored) {
         projectsHistory = JSON.parse(stored);
     } else {
         projectsHistory = [...DEMO_PROJECTS];
-        localStorage.setItem('neodemanda_projects', JSON.stringify(projectsHistory));
+        saveProjectsToStorage();
     }
 }
 
-// Save projects back to localStorage
-function saveProjectsToStorage() {
+// Persiste o histórico de projetos no localStorage
+export function saveProjectsToStorage() {
     localStorage.setItem('neodemanda_projects', JSON.stringify(projectsHistory));
+}
+
+// Insere ou atualiza um projeto no histórico
+export function upsertProjectInHistory(project) {
+    const idx = projectsHistory.findIndex(p => p.id === project.id);
+    if (idx !== -1) {
+        projectsHistory[idx] = JSON.parse(JSON.stringify(project));
+    } else {
+        projectsHistory.push(JSON.parse(JSON.stringify(project)));
+    }
+}
+
+export function findProjectById(id) {
+    return projectsHistory.find(p => p.id === id);
 }
