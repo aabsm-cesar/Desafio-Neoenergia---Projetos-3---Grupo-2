@@ -3,7 +3,7 @@
 Sistema de cálculo de demanda elétrica para múltiplas unidades consumidoras,
 desenvolvido para o Desafio Neoenergia Pernambuco.
 
-## Como rodar
+## Como rodar no servidor
 
 ```bash
 npm install
