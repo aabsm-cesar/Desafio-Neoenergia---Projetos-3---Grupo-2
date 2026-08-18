@@ -10,14 +10,14 @@
             window.location.href = 'login.html';
         }
     </script>
-    <!-- CSS Style sheets -->
-    <link rel="stylesheet" href="style.css">
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Chart.js CDN for visual breakdown -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Canvas Confetti CDN -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Entry point (estilos + JS da página) -->
+    <script type="module" src="/src/main-app.js"></script>
 </head>
 <body>
 
@@ -36,7 +36,7 @@
             <aside class="sidebar">
                 <div>
                     <div class="sidebar-brand">
-                        <img src="logo_neoenergia.png" alt="Logo Neoenergia" style="height: 38px; object-fit: contain; filter: brightness(0) invert(1); margin-right: 4px;">
+                        <img src="/assets/logo_neoenergia.png" alt="Logo Neoenergia" style="height: 38px; object-fit: contain; filter: brightness(0) invert(1); margin-right: 4px;">
                         <div class="brand-text">
                             <h2 style="font-size: 1.15rem; font-weight:800; letter-spacing: -0.5px;">NeoDemanda</h2>
                             <span style="font-size: 0.65rem; opacity:0.75; text-transform: uppercase; font-weight: 600;">Neoenergia</span>
@@ -457,7 +457,7 @@
                             <div class="memorial-page" id="memorial-printable-page">
                                 <div class="memorial-header">
                                     <div class="memorial-header-left">
-                                        <img src="logo_neoenergia.png" alt="Logo Neoenergia" style="height: 38px; object-fit: contain;">
+                                        <img src="/assets/logo_neoenergia.png" alt="Logo Neoenergia" style="height: 38px; object-fit: contain;">
                                         <div>
                                             <h4 style="font-size: 12px; margin: 0; line-height: 1; font-weight: 800; letter-spacing: -0.5px;">NeoDemanda</h4>
                                             <span style="font-size: 8px; color: #555555; text-transform: uppercase; font-weight: 600;">Múltiplas Unidades</span>
@@ -579,10 +579,6 @@
 
     </div>
 
-    <!-- JS Application Script Modules (In Dependency Order) -->
-    <script src="state.js"></script>
-    <script src="calculations.js"></script>
-    <script src="exporters.js"></script>
-    <script src="app.js"></script>
+
 </body>
 </html>

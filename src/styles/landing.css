@@ -454,3 +454,59 @@
         text-align: center;
     }
 }
+
+/* ===================== SCROLL REVEAL ANIMATIONS ===================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.25, 1),
+                transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: opacity, transform;
+}
+
+.reveal.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Variant: slide in from the left (used for text blocks) */
+.reveal-left {
+    transform: translateX(-32px);
+}
+.reveal-left.reveal-visible {
+    transform: translateX(0);
+}
+
+/* Variant: slide in from the right (used for visual/mockup blocks) */
+.reveal-right {
+    transform: translateX(32px);
+}
+.reveal-right.reveal-visible {
+    transform: translateX(0);
+}
+
+/* Variant: simple scale-in (used for cards) */
+.reveal-scale {
+    transform: translateY(20px) scale(0.96);
+}
+.reveal-scale.reveal-visible {
+    transform: translateY(0) scale(1);
+}
+
+/* Stagger helper: children get slightly increasing delay */
+.reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+.reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.12s; }
+.reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.24s; }
+.reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.36s; }
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal-left,
+    .reveal-right,
+    .reveal-scale {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}

@@ -38,7 +38,7 @@
     <!-- HERO SECTION -->
     <section class="landing-hero-section">
         <div class="landing-container hero-grid">
-            <div class="hero-text-content">
+            <div class="hero-text-content reveal reveal-left reveal-visible">
                 <span class="hero-badge">Cálculo de Múltiplas Unidades</span>
                 <h2>Validação automática de demanda elétrica sem erros manuais.</h2>
                 <p>O NeoDemanda automatiza a aplicação de fatores de simultaneidade segundo as normas da Neoenergia Pernambuco, reuniando a taxa histórica de reprovação de projetos elétricos.</p>
@@ -51,7 +51,7 @@
                     </a>
                 </div>
             </div>
-            <div class="hero-visual">
+            <div class="hero-visual reveal reveal-right reveal-visible">
                 <!-- Visual simulation of the dashboard mockup structure in HTML/CSS -->
                 <div class="hero-mockup-window">
                     <div class="mockup-header">
@@ -85,14 +85,14 @@
     <!-- SECTION: WHAT & HOW IT SOLVES -->
     <section id="sobre" class="landing-section bg-light-gray">
         <div class="landing-container">
-            <div class="section-header-center">
+            <div class="section-header-center reveal">
                 <h2>A Solução Definitiva Contra Reprovações de Projetos</h2>
                 <p>Desenvolvida para eliminar erros comuns de dimensionamento e garantir aprovações rápidas junto à concessionária.</p>
             </div>
             
-            <div class="features-grid" id="como-resolve">
+            <div class="features-grid reveal-stagger" id="como-resolve">
                 <!-- Feature 1 -->
-                <div class="feature-card">
+                <div class="feature-card reveal reveal-scale">
                     <div class="feature-icon-wrapper" style="background-color: var(--success-light); color: var(--success);">
                         <i data-lucide="cpu"></i>
                     </div>
@@ -101,7 +101,7 @@
                 </div>
                 
                 <!-- Feature 2 -->
-                <div class="feature-card">
+                <div class="feature-card reveal reveal-scale">
                     <div class="feature-icon-wrapper" style="background-color: var(--success-light); color: var(--success);">
                         <i data-lucide="shield-check"></i>
                     </div>
@@ -110,7 +110,7 @@
                 </div>
                 
                 <!-- Feature 3 -->
-                <div class="feature-card">
+                <div class="feature-card reveal reveal-scale">
                     <div class="feature-icon-wrapper" style="background-color: var(--info-light); color: var(--info);">
                         <i data-lucide="file-output"></i>
                     </div>
@@ -124,14 +124,14 @@
     <!-- SECTION: TARGET AUDIENCE -->
     <section id="para-quem" class="landing-section">
         <div class="landing-container">
-            <div class="section-header-center">
+            <div class="section-header-center reveal">
                 <h2>Para Quem é Destinado?</h2>
                 <p>Uma plataforma integrada que otimiza o fluxo de ponta a ponta, ligando projetistas elétricos à equipe de avaliação da Neoenergia.</p>
             </div>
 
-            <div class="audience-grid">
+            <div class="audience-grid reveal-stagger">
                 <!-- Card 1 -->
-                <div class="audience-card">
+                <div class="audience-card reveal reveal-scale">
                     <div class="audience-card-top">
                         <i data-lucide="drafting-compass"></i>
                         <h3>Projetistas e Engenheiros</h3>
@@ -140,16 +140,16 @@
                 </div>
                 
                 <!-- Card 2 -->
-                <div class="audience-card">
+                <div class="audience-card reveal reveal-scale">
                     <div class="audience-card-top">
                         <i data-lucide="check-square"></i>
-                        <h3>Analistas da Concessionária</h3>
+                        <h3>Analistas da NeoEnergia</h3>
                     </div>
                     <p>Agilize a auditoria dos projetos recebendo arquivos XML padronizados. Reduza o tempo de atendimento e a fila de projetos pendentes de avaliação técnica.</p>
                 </div>
                 
                 <!-- Card 3 -->
-                <div class="audience-card">
+                <div class="audience-card reveal reveal-scale">
                     <div class="audience-card-top">
                         <i data-lucide="building-2"></i>
                         <h3>Clientes e Construtoras</h3>
@@ -163,27 +163,27 @@
     <!-- SECTION: TECHNICAL FAQ / NORMATIVES -->
     <section id="faq" class="landing-section bg-light-gray">
         <div class="landing-container" style="max-width: 800px;">
-            <div class="section-header-center">
+            <div class="section-header-center reveal">
                 <h2>Regulamentações e Normas Técnicas</h2>
                 <p>Entenda as bases técnicas regulamentadas incorporadas na ferramenta.</p>
             </div>
 
-            <div class="faq-accordion-group">
-                <details class="faq-item">
+            <div class="faq-accordion-group reveal-stagger">
+                <details class="faq-item reveal">
                     <summary class="faq-question">Quais normas técnicas o sistema segue?</summary>
                     <div class="faq-answer">
                         <p>O NeoDemanda segue integralmente o regulamento técnico <strong>SM04.2-PE</strong> da Neoenergia Pernambuco, que dita os critérios de fornecimento em tensão secundária para edificações de múltiplas unidades consumidoras.</p>
                     </div>
                 </details>
                 
-                <details class="faq-item">
+                <details class="faq-item reveal">
                     <summary class="faq-question">Qual é o limite para submissão simplificada?</summary>
                     <div class="faq-answer">
                         <p>Projetos com demanda calculada de até 50 kVA que não apresentem cargas especiais complexas (motores trifásicos robustos, elevadores de alta potência) podem ser dimensionados pelo Modo Simplificado da aplicação.</p>
                     </div>
                 </details>
                 
-                <details class="faq-item">
+                <details class="faq-item reveal">
                     <summary class="faq-question">Quando o projeto é enquadrado como Subestação Própria?</summary>
                     <div class="faq-answer">
                         <p>Sempre que a demanda resultante do cálculo ultrapassar o limite técnico de <strong>75 kVA</strong>, o enquadramento na concessionária é alterado e o sistema gerará o alerta normativo informando a necessidade de projeto de posto de transformação dedicado.</p>
@@ -195,7 +195,7 @@
 
     <!-- SECTION: CALL TO ACTION -->
     <section class="landing-cta-block">
-        <div class="landing-container" style="text-align: center; max-width: 700px;">
+        <div class="landing-container reveal reveal-scale" style="text-align: center; max-width: 700px;">
             <h2>Pronto para validar seus projetos?</h2>
             <p style="margin-bottom: 2rem; opacity: 0.9; font-size: 1.1rem;">Reduza o tempo de aprovação de 30 dias para análise imediata com cálculos 100% corretos.</p>
             <a href="login.html" class="btn btn-primary" style="width: auto; padding: 15px 35px; background-color: var(--white); color: var(--primary); box-shadow: none;">
